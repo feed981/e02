@@ -108,9 +108,12 @@ logback.xml
 ```
 
 # 问题
-### 1. 父工程 pom.xml <modules> 标签用于定义该父项目包含的子模块
 
-父工程
+父工程 = 父项目 = 父模块
+
+### 1.  pom.xml modules
+
+用于定义该父项目包含的子模块
 ```xml
     <modules>
         <module>heima-leadnews-model</module>
@@ -124,10 +127,62 @@ logback.xml
 
 ### 2. 父工程没相关的依赖导致子工程要用这个依赖时后找不到，就报错
 
+Could not find artifact org.mybatis:mybatis:jar:unknown in central
+
+子工程 heima-leadnews-model
+```xml
+    <parent>
+        <artifactId>heima-leadnews</artifactId>
+        <groupId>com.feed02</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+        </dependency>
+```
+
+父工程 heima-leadnews
+```xml
+        <mybatis.version>3.5.1</mybatis.version>
+    </properties>
+
+    <dependencyManagement>
+
+        <dependencies>
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis</artifactId>
+                <version>${mybatis.version}</version>
+            </dependency>
+```
 
 ### 3. 子工程依赖另个子工程时，父工程也要提供内部依赖的版本
 
-父工程
+
+[ERROR] [ERROR] Some problems were encountered while processing the POMS:
+
+[ERROR] 'dependencies.dependency.version' for com.heima: heima-leadnews-model: jar is missing. @ line 25, column 21
+
+子工程 heima-leadnews-services
+```xml
+    <parent>
+        <artifactId>heima-leadnews</artifactId>
+        <groupId>com.feed02</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <dependencies>
+    
+        <dependency>
+            <groupId>com.feed02</groupId>
+            <artifactId>heima-leadnews-model</artifactId>
+        </dependency>
+    </dependencies>
+```
+
+父工程 heima-leadnews
 ```xml
  <!--内部依赖工程 -->
 
@@ -137,6 +192,8 @@ logback.xml
                 <version>${project.version}</version>
             </dependency>
 ```
+
+
 
 ### 4. 无法导入 org.springframework.cloud.client.discovery.EnableDiscoveryClient 
 
@@ -177,7 +234,7 @@ logback.xml
         </dependencies>
     </dependencyManagement>
 ```
-子工程 heima-leadnews-service
+子工程 heima-leadnews-services
 ```xml
     <parent>
         <artifactId>heima-leadnews</artifactId>
