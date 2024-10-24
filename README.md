@@ -165,7 +165,7 @@ Could not find artifact org.mybatis:mybatis:jar:unknown in central
 
 [ERROR] 'dependencies.dependency.version' for com.heima: heima-leadnews-model: jar is missing. @ line 25, column 21
 
-子工程 heima-leadnews-services
+子工程 heima-leadnews-service
 ```xml
     <parent>
         <artifactId>heima-leadnews</artifactId>
@@ -234,7 +234,7 @@ Could not find artifact org.mybatis:mybatis:jar:unknown in central
         </dependencies>
     </dependencyManagement>
 ```
-子工程 heima-leadnews-services
+子工程 heima-leadnews-service
 ```xml
     <parent>
         <artifactId>heima-leadnews</artifactId>
