@@ -3,7 +3,7 @@
 引导类
 
 ```java
-package com.heima.user;
+package com.feed02.user;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
@@ -12,7 +12,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@MapperScan("com.heima.user.mapper")
+@MapperScan("com.feed02.user.mapper")
 public class UserApplication {
 
     public static void main(String[] args) {
@@ -47,12 +47,12 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://localhost:3306/leadnews_user?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
     username: root
-    password: root
+    password: qwe123
 # 设置Mapper接口所对应的XML文件位置，如果你在Mapper接口中有自定义方法，需要进行该配置
 mybatis-plus:
   mapper-locations: classpath*:mapper/*.xml
   # 设置别名包扫描路径，通过该属性可以给包中的类注册别名
-  type-aliases-package: com.heima.model.user.pojos
+  type-aliases-package: com.feed02.model.user.pojos
 ```
 
 logback.xml
@@ -62,7 +62,7 @@ logback.xml
 
 <configuration>
     <!--定义日志文件的存储地址,使用绝对路径-->
-    <property name="LOG_HOME" value="e:/logs"/>
+    <property name="LOG_HOME" value="D:/hmtt/logs"/>
 
     <!-- Console 输出设置 -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
@@ -108,7 +108,7 @@ logback.xml
 ```
 
 # 问题
-## 父工程 pom.xml <modules> 标签用于定义该父项目包含的子模块
+### 1. 父工程 pom.xml <modules> 标签用于定义该父项目包含的子模块
 
 父工程
 ```xml
@@ -122,10 +122,10 @@ logback.xml
 - maven clean 
 - 删除 .idea 文件夹和 *.iml 文件，然后重新导入项目
 
-## 父工程没相关的依赖导致子工程要用这个依赖时后找不到，就报错
+### 2. 父工程没相关的依赖导致子工程要用这个依赖时后找不到，就报错
 
 
-## 子工程依赖另个子工程时，父工程也要提供内部依赖的版本
+### 3. 子工程依赖另个子工程时，父工程也要提供内部依赖的版本
 
 父工程
 ```xml
@@ -138,7 +138,7 @@ logback.xml
             </dependency>
 ```
 
-## 无法导入 org.springframework.cloud.client.discovery.EnableDiscoveryClient 
+### 4. 无法导入 org.springframework.cloud.client.discovery.EnableDiscoveryClient 
 
 父工程 heima-leadnews
 ```xml
@@ -226,7 +226,7 @@ logback.xml
 - maven clean 
 - 删除 .idea 文件夹和 *.iml 文件，然后重新导入项目
 
-## com.sun.tools.javac.tree.JCTree
+### 5. com.sun.tools.javac.tree.JCTree
 
 Lombok 与 JDK 21 的兼容性：在 JDK 21 中，com.sun.tools.javac.tree.JCTree$JCImport 类的 qualid 字段类型发生了变化。之前它的类型是 JCTree，而在 JDK 21 中变为 JCFieldAccess。这个变化导致了 Lombok 在尝试访问该字段时出现错误。
 
