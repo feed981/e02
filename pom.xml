@@ -10,6 +10,7 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>heima-leadnews-model</module>
+        <module>heima-leadnews-service</module>
     </modules>
 
     <!-- 继承Spring boot工程 -->
@@ -29,8 +30,14 @@
         <!-- 在父工程 pom.xml 中升级 MyBatis-Plus 版本 3.4.1 to 3.4.3 -->
         <mybatis.plus.version>3.4.3</mybatis.plus.version>
         <fastjson.version>1.2.58</fastjson.version>
-        <lombok.version>1.18.8</lombok.version>
+        <lombok.version>1.18.30</lombok.version>
 
+        <mysql.version>5.1.46</mysql.version>
+        <mybatis.version>3.5.1</mybatis.version>
+        <mybatis.spring.version>2.0.1</mybatis.spring.version>
+
+        <spring.cloud.version>Hoxton.SR10</spring.cloud.version>
+        <com.alibaba.cloud>2.2.5.RELEASE</com.alibaba.cloud>
     </properties>
 
     <dependencyManagement>
@@ -51,7 +58,6 @@
             </dependency>
 
             <dependency>
-
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
                 <version>${mybatis.plus.version}</version>
@@ -62,6 +68,52 @@
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
                 <version>${fastjson.version}</version>
+            </dependency>
+
+            <!-- Mysql 数据库 -->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis</artifactId>
+                <version>${mybatis.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis-spring</artifactId>
+                <version>${mybatis.spring.version}</version>
+            </dependency>
+
+            <!--内部依赖工程 start-->
+
+            <dependency>
+                <artifactId>heima-leadnews-model</artifactId>
+                <groupId>com.feed02</groupId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!--内部依赖工程 end-->
+
+
+            <!-- Spring Cloud Dependencies -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring.cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- Spring Cloud Alibaba Dependencies -->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${com.alibaba.cloud}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
 
         </dependencies>
