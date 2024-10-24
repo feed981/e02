@@ -1,4 +1,8 @@
-com.baomidou.mybatisplus.annotation.TableName 类无法找到的问题，通常这是因为 MyBatis-Plus 的依赖没有正确引入
+# 问题
+
+### 1. com.baomidou.mybatisplus.annotation.TableName 类无法找到
+
+通常这是因为 MyBatis-Plus 的依赖没有正确引入
 
 父工程 (pom.xml) 中已经通过 dependencyManagement 声明了 mybatis-plus-boot-starter 依赖
 
