@@ -3,6 +3,8 @@ package com.feed02.user.controller.v1;
 import com.feed02.model.common.dtos.ResponseResult;
 import com.feed02.model.user.dtos.LoginDto;
 import com.feed02.user.service.IApUserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,11 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/login")
+@Api(value = "app端用户登录",tags = "ap_user",description = "app端用户登录API")
 public class ApUserLoginController {
 
     @Autowired
     private IApUserService apUserService;
     @PostMapping("/login_auth")
+    @ApiOperation("用户登录")
     public ResponseResult login(@RequestBody LoginDto dto){
         return apUserService.login(dto);
     }

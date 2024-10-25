@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.feed02.common.exception.ExceptionCatch,\
+  com.feed02.common.swagger.SwaggerConfiguration
