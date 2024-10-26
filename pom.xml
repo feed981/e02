@@ -21,6 +21,7 @@
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.2.1.RELEASE</version>
     </parent>
+
     <properties>
         <!-- 项目源码及编译输出的编码 -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -49,6 +50,8 @@
 
 <!--        <swagger.version>2.9.2</swagger.version>-->
         <swagger.version>3.0.0</swagger.version>
+
+        <knife4j.version>2.0.9</knife4j.version>
     </properties>
 
     <dependencyManagement>
@@ -173,12 +176,17 @@
                 <version>${swagger.version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>io.springfox</groupId>
-                <artifactId>springfox-swagger-ui</artifactId>
-                <version>${swagger.version}</version>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>io.springfox</groupId>-->
+<!--                <artifactId>springfox-swagger-ui</artifactId>-->
+<!--                <version>${swagger.version}</version>-->
+<!--            </dependency>-->
 
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-spring-boot-starter</artifactId>
+                <version>${knife4j.version}</version>
+            </dependency>
 
         </dependencies>
     </dependencyManagement>

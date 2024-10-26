@@ -10,6 +10,8 @@ import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
+import java.util.Collections;
+
 @Configuration
 public class SwaggerConfiguration {
 
@@ -25,12 +27,12 @@ public class SwaggerConfiguration {
    }
 
    private ApiInfo buildApiInfo() {
-      Contact contact = new Contact("黑马程序员", "", "");
+      Contact contact = new Contact("黑马头条","","");
       return new ApiInfoBuilder()
               .title("黑马头条-平台管理API文档")
-              .description("黑马头条后台api")
+              .description("黑马头条-后台api")
               .contact(contact)
-              .version("1.0.0")
-              .build();
+              .version("1.0.0").build();
    }
+
 }
