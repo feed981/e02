@@ -1,166 +1,180 @@
-# knife4j-demo
+# 网关-app端网关搭建
 
-快速集成Knife4j
+在heima-leadnews-gateway下创建heima-leadnews-app-gateway微服务
 
-Spring Boot版本2.2.1.RELEASE、Knife4j版本2.0.9
+引导类：
 
-在maven项目的pom.xml中引入Knife4j的依赖包
-```xml 
-    <knife4j.version>2.0.9</knife4j.version>
-
-    <dependency>
-      <groupId>com.github.xiaoymin</groupId>
-      <artifactId>knife4j-spring-boot-starter</artifactId>
-      <version>${knife4j.version}</version>
-    </dependency>
-```
-
-创建Swagger配置依赖
-
-```java 
-package org.example.config;
-
-
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.Contact;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.plugins.Docket;
-//import springfox.documentation.swagger2.annotations.EnableSwagger2;
-
-@Configuration
-//@EnableSwagger2
-public class SwaggerConfiguration {
-
-    @Bean
-    public Docket buildDocket() {
-        return new Docket(DocumentationType.SWAGGER_2)
-                .apiInfo(buildApiInfo())
-                .select()
-                // 要扫描的API(Controller)基础包
-                .apis(RequestHandlerSelectors.basePackage("org.example"))
-                .paths(PathSelectors.any())
-                .build();
-    }
-
-    private ApiInfo buildApiInfo() {
-        Contact contact = new Contact("feed01","","");
-        return new ApiInfoBuilder()
-                .title("feed01-平台管理API文档")
-                .description("feed01-后台api")
-                .contact(contact)
-                .version("1.0.0").build();
-    }
-}
-```
-
-控制器
-```java 
-package org.example.controller;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-@RestController
-@RequestMapping("/api")
-@Api(tags = "首页模块")
-public class IndexController {
-
-    @ApiImplicitParam(name = "name",value = "姓名",required = true)
-    @ApiOperation(value = "向客人问好")
-    @GetMapping("/sayHi")
-    public ResponseEntity<String> sayHi(@RequestParam(value = "name")String name){
-        return ResponseEntity.ok("Hi:"+name);
-    }
-}
-```
-入口
-```java 
-package org.example;
+```java
+package com.heima.app.gateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @SpringBootApplication
-public class App {
+@EnableDiscoveryClient  //开启注册中心
+public class AppGatewayApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(App.class, args);
+        SpringApplication.run(AppGatewayApplication.class,args);
     }
 }
+```
 
+bootstrap.yml
+
+```yaml
+server:
+  port: 51601
+spring:
+  application:
+    name: leadnews-app-gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.33.11:8848
+      config:
+        server-addr: 192.168.33.11:8848
+        file-extension: yml
+```
+
+在nacos的配置中心创建dataid为leadnews-app-gateway的yml配置
+
+
+```yaml
+spring:
+  cloud:
+    gateway:
+      globalcors:
+        add-to-simple-url-handler-mapping: true
+        corsConfigurations:
+          '[/**]':
+            allowedHeaders: "*"
+            allowedOrigins: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - DELETE
+              - PUT
+              - OPTION
+      routes:
+        # 平台管理
+        - id: user
+          uri: lb://leadnews-user
+          predicates:
+            - Path=/user/**
+          filters:
+            - StripPrefix= 1
 ```
 
 
-http://localhost:51801/doc.html
+添加依赖
 
-## Knife4j文档请求异常
-
-加上这个依赖
-```xml 
-    <swagger.version>3.0.0</swagger.version>
-
-    <dependency>
-      <groupId>io.springfox</groupId>
-      <artifactId>springfox-boot-starter</artifactId>
-      <version>${swagger.version}</version>
-    </dependency>
-```
-
-# 功能实现
-
-
-## 引入knife4j的依赖
-
-父项目
+spring.cloud.version 2020.0.5 和 nacos 2.2.1.RELEASE 不兼容
+        
+父工程 heima-leadnews
 ```xml
 
-        <knife4j.version>2.0.9</knife4j.version>
+    <!-- 继承Spring boot工程 -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.3.9.RELEASE</version>
+    </parent>
+
+   <properties>
+      <com.alibaba.cloud>2.2.1.RELEASE</com.alibaba.cloud>
+
+        <spring.cloud.version>Hoxton.SR3</spring.cloud.version>
+    </properties>
+
+            <!-- Spring Cloud Dependencies -->
             <dependency>
-                <groupId>com.github.xiaoymin</groupId>
-                <artifactId>knife4j-spring-boot-starter</artifactId>
-                <version>${knife4j.version}</version>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring.cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
+
+        <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+                <version>${com.alibaba.cloud}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+                <version>${com.alibaba.cloud}</version>
+            </dependency>
+
 ```
+子工程 heima-leadnews-gateway
 
-子项目
-在heima-leadnews-common、heima-leadnews-model模块中的pom.xml文件中
-
-可能有用到的都要加，只加 heima-leadnews-common 网站没显示
 ```xml
         <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-boot-starter</artifactId>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-gateway</artifactId>
         </dependency>
-
-<!--        <dependency>-->
-<!--            <groupId>io.springfox</groupId>-->
-<!--            <artifactId>springfox-swagger-ui</artifactId>-->
-<!--        </dependency>-->
 
         <dependency>
-            <groupId>com.github.xiaoymin</groupId>
-            <artifactId>knife4j-spring-boot-starter</artifactId>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>2.0.1.Final</version> <!-- 或者最新版本 -->
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>6.1.5.Final</version> <!-- 或者最新版本 -->
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
         </dependency>
 ```
-## 自动装配
-在heima-leadnews-common模块中的resources目录中新增以下目录和文件
 
-文件：resources/META-INF/Spring.factories
+应用程序在启动时遇到了 NoClassDefFoundError 和 ClassNotFoundException，特别是缺少 javax.validation.ValidationException 类。这通常表明您的项目缺少必要的依赖项，尤其是与 Bean 验证相关的类。
+
+缺失的依赖：
+javax.validation.ValidationException 是 Java Bean Validation API 的一部分，通常由 javax.validation:validation-api 提供。这个类在 Spring Cloud Gateway 中用于验证配置和参数。
+Spring Cloud 版本：
+您使用的是 Spring Cloud Hoxton.SR3 和 Spring Cloud Gateway 2.2.2.RELEASE。这些版本可能需要特定的依赖项来支持其功能。
+
+
+添加验证 API 依赖：
+在您的 pom.xml 中添加以下依赖，以引入 Java Bean Validation API：
+```xml
+<dependency>
+    <groupId>javax.validation</groupId>
+    <artifactId>validation-api</artifactId>
+    <version>2.0.1.Final</version> <!-- 或者最新版本 -->
+</dependency>
 ```
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.feed02.common.swagger.SwaggerConfiguration
+添加实现库：
+通常，您还需要一个实现库，例如 Hibernate Validator。可以添加以下依赖：
+```xml
+<dependency>
+    <groupId>org.hibernate.validator</groupId>
+    <artifactId>hibernate-validator</artifactId>
+    <version>6.1.5.Final</version> <!-- 或者最新版本 -->
+</dependency>
 ```
 
-http://localhost:51801/doc.html
+
+
+环境搭建完成以后，启动项目网关和用户两个服务，使用postman进行测试
+
+请求地址：http://localhost:51601/user/api/v1/login/login_auth   
