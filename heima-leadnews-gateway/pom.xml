@@ -53,10 +53,14 @@
         </dependency>
 
 <!--        <dependency>-->
-<!--            <groupId>io.projectreactor.netty</groupId>-->
-<!--            <artifactId>reactor-netty</artifactId>-->
-<!--            <version>0.9.3.RELEASE</version>-->
+<!--            <groupId>com.feed02</groupId>-->
+<!--            <artifactId>heima-leadnews-utils</artifactId>-->
 <!--        </dependency>-->
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
 
     </dependencies>
 
