@@ -1,12 +1,11 @@
 server:
-  port: 51801
+  port: 51601
 spring:
   application:
-    name: leadnews-user
+    name: leadnews-app-gateway
   cloud:
     nacos:
       discovery:
-        autoRegister: true # Nacos服务自动注册
         server-addr: 192.168.33.11:8848
       config:
         server-addr: 192.168.33.11:8848

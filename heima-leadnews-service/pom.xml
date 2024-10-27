@@ -19,7 +19,6 @@
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
 
-        <com.alibaba.cloud>2.2.1.RELEASE</com.alibaba.cloud>
     </properties>
 
     <dependencies>
@@ -47,13 +46,11 @@
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
-            <version>${com.alibaba.cloud}</version>
         </dependency>
 
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
-            <version>${com.alibaba.cloud}</version>
         </dependency>
 
         <!-- 添加此依赖以使用 EnableDiscoveryClient -->
