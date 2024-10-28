@@ -1,3 +1,7 @@
+# 弃
+
+分支: hmtt-day1-18 更新配置方式详见 vagrant-ubuntu 
+
 # 使用 Vagrant 和 Docker 通过 docker-compose.yml 文件快速启动 Nacos
 
 # Vagrant
