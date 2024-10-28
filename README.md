@@ -241,7 +241,7 @@ spring:
 
 ## Nacos 配置
 
- leadnews-app-gateway  (端口 51601)
+leadnews-app-gateway  (端口 51601)
 ```yaml
 spring:
   cloud:
@@ -267,6 +267,8 @@ spring:
           filters:
             - StripPrefix= 1
 ```
+1. 配置中的 uri: lb://leadnews-user 表示网关会将请求负载均衡（lb://）转发到名为 leadnews-user 的服务实例。
+2. StripPrefix=1 表示会移除路径中的第一个路径前缀 /user
 leadnews-user
 
 ```yaml
@@ -321,5 +323,43 @@ java.exe                      5920 Console                    2    159,856 K
 从 netstat 的输出来看，51601 端口已被 java.exe 进程（PID 5920）占用，并且状态显示为 LISTENING，这意味着该端口正在由 java 应用监听中。在您的环境中，这通常表示 Spring Boot 服务（leadnews-app-gateway）已成功启动并在 51601 端口上监听。
 
 # 解决502
+
 1. 端口 51601 加上服务监听所有网络接口 address: 0.0.0.0
 2. Nginx 配置中，将 localhost 或 127.0.0.1 替换为主机的实际 IP 地址
+
+# 其他
+
+重启时nacos config 没了 访问8848时就捞不到配置
+```
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Failed to configure a DataSource: 'url' attribute is not specified and no embedded datasource could be configured.
+
+Reason: Failed to determine a suitable driver class
+
+
+Action:
+
+Consider the following:
+	If you want an embedded database (H2, HSQL or Derby), please put it on the classpath.
+	If you have database settings to be loaded from a particular profile you may need to activate it (no profiles are currently active).
+
+Disconnected from the target VM, address: '127.0.0.1:51479', transport: 'socket'
+```
+
+# 再次来看下请求流向
+
+0. 起Nginx后 引用教程现成的前端画面(详见上面的"共享文件夹配置")我门点击登陆就有送这个请求 http://localhost:8801/app/user/api/v1/login/login_auth/
+1. 请求到达 Nginx 的 /app/user/api/v1/login/login_auth/
+2. 从Nginx配置中看到 /app/ 会有这个 rewrite ^/app/(.*)$ /$1 break;  # 去掉 /app 前缀
+3. Nginx 将请求转发到 http://localhost:51601/user/api/v1/login/login_auth/
+4. 可以看到Nacos配置中 uri: lb://leadnews-user  转发到名为 leadnews-user 的服务实例 有filter: StripPrefix=1 表示会移除路径中的第一个路径前缀 /user
+5. 根据 Nacos 的服务发现，进一步将请求转发到 leadnews-user 服务（端口 51801） http://localhost:51801/api/v1/login/login_auth/
+
+
+
+
