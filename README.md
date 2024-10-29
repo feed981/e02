@@ -1,13 +1,19 @@
+#  IdType.ID_WORKER 不适用
+
+MyBatis-Plus 从 3.3.0 开始，推荐使用 IdType.ASSIGN_ID 替代 ID_WORKER，因为 ID_WORKER 在某些场景中可能不再适用
+
+# 表结构分析
+
 文章相关的表共有三个
 - ap_article
 - ap_article_config
 - ap_article_content
 
-# 为什么文章表要拆成三张表
+## 为什么文章表要拆成三张表
 
 将大表拆分为多个小表，特别是当某些列（如 longtext 类型）频繁影响查询性能时，可以显著提高操作效率。例如，ap_article 表的操作效率高于 ap_article_config 表，因为后者包含 longtext 列，这可能导致性能下降
 
-# 表的拆分-垂直分表
+## 表的拆分-垂直分表
 
 垂直分表:将一个表的字段分散到多个表中,每个表存储其中一部分字段。
 
