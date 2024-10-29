@@ -29,6 +29,12 @@ public class AuthorizeFilter implements Ordered, GlobalFilter {
             return chain.filter(exchange);
         }
 
+        // 怀疑是前端代码没带token? 放行后没报 502
+        if(request.getURI().getPath().contains("/article")){
+            // 放行
+            return chain.filter(exchange);
+        }
+
         //3.获取token
         String token = request.getHeaders().getFirst("token");
 

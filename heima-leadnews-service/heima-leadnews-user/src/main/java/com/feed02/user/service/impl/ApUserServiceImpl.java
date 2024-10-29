@@ -24,10 +24,12 @@ import java.util.Map;
 public class ApUserServiceImpl extends ServiceImpl<ApUserMapper , ApUser> implements IApUserService {
     @Override
     public ResponseResult login(LoginDto dto) {
+
         //1.正常登录 用户名和密码
         if(StringUtils.isNotBlank(dto.getPhone()) && StringUtils.isNotBlank(dto.getPassword())){
             //1.1 根据手机号查询用户信息
-            ApUser dbUser = getOne(Wrappers.<ApUser>lambdaQuery().eq(ApUser::getPhone, dto.getPhone()));
+            ApUser dbUser = query().eq("phone", dto.getPhone()).one();
+//            ApUser dbUser = getOne(Wrappers.<ApUser>lambdaQuery().eq(ApUser::getPhone, dto.getPhone()));
             if(dbUser == null){
                 return ResponseResult.errorResult(AppHttpCodeEnum.DATA_NOT_EXIST,"用户信息不存在");
             }

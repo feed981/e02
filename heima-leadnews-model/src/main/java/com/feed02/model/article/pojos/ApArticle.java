@@ -1,4 +1,4 @@
-package com.feed02.model.article;
+package com.feed02.model.article.pojos;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
