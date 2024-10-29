@@ -1,27 +1,77 @@
-#  IdType.ID_WORKER 不适用
+# sql
 
-MyBatis-Plus 从 3.3.0 开始，推荐使用 IdType.ASSIGN_ID 替代 ID_WORKER，因为 ID_WORKER 在某些场景中可能不再适用
+leadnews_article.sql
 
-# 表结构分析
+添加article 的表
 
-文章相关的表共有三个
-- ap_article
-- ap_article_config
-- ap_article_content
+# app端文章列表 功能实现
 
-## 为什么文章表要拆成三张表
+需要在nacos中添加对应的配置
 
-将大表拆分为多个小表，特别是当某些列（如 longtext 类型）频繁影响查询性能时，可以显著提高操作效率。例如，ap_article 表的操作效率高于 ap_article_config 表，因为后者包含 longtext 列，这可能导致性能下降
+Data ID: leadnews-app-gateway
 
-## 表的拆分-垂直分表
+添加
+```yaml
+        # 文章管理
+        - id: article
+          uri: lb://leadnews-article
+          predicates:
+            - Path=/article/**
+          filters:
+            - StripPrefix= 1
+```
 
-垂直分表:将一个表的字段分散到多个表中,每个表存储其中一部分字段。
 
-优势:
-1. 减少IO争抢,减少锁表的几率,查看文章概述与文章详情互不影响
-2. 充分发挥高频数据的操作效率,对文章概述数据操作的高效率不会被操作文章详情数据的低效率所拖累。
+通过Nacos 转发到各个微服务
 
-拆分规则:
-1. 把不常用的字段单独放在一张表
-2. 把text、blob等大字段拆分出来单独放在一张表
-3. 经常组合查询的字段单独放在一张表中
+localhost:51601/user/api/v1/article/load
+
+localhost:51601/article/api/v1/article/load 对应 id
+
+
+
+查询是带入的常量type ,tag
+- heima-leadnews-common/src/main/java/com/feed02/common/constants/ArticleConstants.java
+
+pojos
+- heima-leadnews-model/src/main/java/com/feed02/model/article/pojos/ApArticle.java
+- heima-leadnews-model/src/main/java/com/feed02/model/article/pojos/ApArticleConfig.java
+- heima-leadnews-model/src/main/java/com/feed02/model/article/pojos/ApArticleContent.java
+
+dtos
+- heima-leadnews-model/src/main/java/com/feed02/model/article/dtos/ArticleHomeDto.java
+
+
+
+编写mapper文件
+- heima-leadnews-service/heima-leadnews-article/src/main/java/com/feed02/article/mapper/ApArticleMapper.java
+
+文章表与文章配置表多表查询
+- heima-leadnews-service/heima-leadnews-article/src/main/resources/mapper/ApArticleMapper.xml
+
+配置
+- heima-leadnews-service/heima-leadnews-article/src/main/resources/bootstrap.yml
+
+log存放路径
+- heima-leadnews-service/heima-leadnews-user/src/main/resources/logback.xml
+- heima-leadnews-service/heima-leadnews-article/src/main/resources/logback.xml
+
+编写业务层代码
+- heima-leadnews-service/heima-leadnews-article/src/main/java/com/feed02/article/service/IApArticleService.java
+- heima-leadnews-service/heima-leadnews-article/src/main/java/com/feed02/article/service/impl/ApArticleServiceImpl.java
+
+编写控制器代码
+- heima-leadnews-service/heima-leadnews-article/src/main/java/com/feed02/article/controller/vl/ArticleHomeController.java
+
+## swagger测试或前后端联调测试
+
+1. ok 网关(直接放行可以) localhost:51601/article/api/v1/article/load
+2. ok 直接请求 localhost:51802//api/v1/article/load
+
+## TODO:
+没放行文章请求都是502，猜测是前端没带token
+
+网关过滤器/article 先放行
+- heima-leadnews-gateway/heima-leadnews-app-gateway/src/main/java/com/feed02/app/gateway/filter/AuthorizeFilter.java
+
+
