@@ -61,7 +61,7 @@ volumes:
 ```bash
 sudo docker network inspect nacos_net
 ```
-"Containers": {} 部分为空 代表目前没有任何容器连接到该网络
+"Containers": {} 部分为空，代表目前没有任何容器连接到该网络
 
 ```bash
 [
