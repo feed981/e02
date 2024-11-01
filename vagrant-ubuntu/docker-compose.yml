@@ -1,0 +1,45 @@
+version: '3.5'
+
+services:
+  nacos:
+    image: nacos/nacos-server:v2.2.2
+    container_name: nacos
+    restart: always
+    ports:
+      - "8848:8848"  # Nacos Web 界面访问端口
+    environment:
+      - MODE=standalone  # 单机模式
+      - SPRING_DATASOURCE_PLATFORM=mysql  # 这告诉 Nacos 使用 MySQL 数据库
+      - MYSQL_SERVICE_HOST=mysql          # 这里要确保服务名称与 mysql 容器的名称一致
+      - MYSQL_SERVICE_PORT=3306           # 端口应保持 3306
+      - MYSQL_SERVICE_DB_NAME=nacos_config
+      - MYSQL_SERVICE_USER=nacos_user
+      - MYSQL_SERVICE_PASSWORD=nacos_password
+    volumes:
+      - ./logs:/home/nacos/logs  # 持久化日志
+    networks:
+      - nacos_net
+
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    ports:
+      - "3308:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: nacos_config
+      MYSQL_USER: nacos_user
+      MYSQL_PASSWORD: nacos_password
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - nacos_net
+
+# 定义一个名为 nacos_net 的自定义网络，使得容器之间可以相互通信。
+networks:
+  nacos_net:
+    name: nacos_net
+
+# 定义一个名为 mysql_data 的数据卷，用于持久化存储 MySQL 数据。
+volumes:
+  mysql_data:
