@@ -1,77 +1,135 @@
-# sql
+# List
+```ftl
+<#list></#list>
+```
+## 例子
+```ftl
+<#list stus as stu>
+        <tr>
+                <td>${stu_index+1}</td>
+                <td>${stu.name}</td>
+                <td>${stu.age}</td>
+                <td>${stu.money}</td>
+        </tr>
+</#list>
+```
+## 注意事项
 
-leadnews_article.sql
+${k_index}:得到循环的下标,使用方法是在stu后边加"_index",它的值是从0开始
 
-添加article 的表
 
-# app端文章列表 功能实现
 
-需要在nacos中添加对应的配置
+# Map
 
-Data ID: leadnews-app-gateway
+## 获取map中的值
 
-添加
-```yaml
-        # 文章管理
-        - id: article
-          uri: lb://leadnews-article
-          predicates:
-            - Path=/article/**
-          filters:
-            - StripPrefix= 1
+```ftl
+map['keyname'].property
+
+map.keyname.property
+```
+
+## 遍历map
+```ftl
+<#list userMap?keys as key>
+        key:${key}--value:${userMap["${key}"]}
+</#list>
+```
+
+# if
+
+
+## 指令
+```ftl
+<#if expression>
+<#else>
+</#if>
+```
+## 需求:在list集合中判断学生为小红的数据字体显示为红色。
+```ftl
+<#if stu.name=''>
+        <tr style="color: red">
+                <td>${stu_index}</td>
+                <td>${stu.name}</td>
+                <td>${stu.age}</td>
+                <td>${stu.money}</td>
+        </tr>
+<#else >
+        <tr>
+                <td>${stu_index}</td>
+                <td>${stu.name}</td>
+                <td>${stu.age}</td>
+                <td>${stu.money}</td>
+        </tr>
+</#if>
+```
+## 注意事项
+
+在freemarker中,判断是否相等,=与==是一样的
+
+
+# 空值处理
+
+## 判断某变量是否存在使用"??"
+
+用法为:variable??如果该变量存在,返回true,否则返回false
+
+例:为防止stus为空报错可以加上判断如下:
+```ftl
+<#if stus??>
+        <#list stus as stu>
+        </#list>
+</#if>
+```
+## 缺失变量默认值使用"!"
+
+使用!要以指定一个默认值,当变量为空时显示默认值
+
+例:${name!''}表示如果name为空显示空字符串。
+
+如果是嵌套对象则建议使用()括起来
+
+例:${(stu.name)!''}表示,如果stu或name为空默认显示空字符串。
+
+
+
+# 运算符
+
+=和!=可以用于字符串、数值和日期来比较是否相等
+
+=和!=两边必须是相同类型的值,否则会产生错误
+
+其它的运行符可以作用于数字和日期,但不能作用于字符串
+
+使用gt等字母运算符代替>会有更好的效果,因为 FreeMarker会把>**解释成FTL标签的结束字符
+
+
+
+# 内建函数语法格式: 变量+?+函数名称
+
+```ftl
+${集合名?size}
+
+<!--日期格式化-->
+显示年月日: ${today?date}
+显示时分秒：${today?time}
+显示日期+时间：${today?datetime}
+${today?string("yyyy年MM月")}
+
+<!--
+model.addAttribute("point", 102920122);
+point是数字型，使用${point}会显示这个数字的值，每三位使用逗号分隔。
+如果不想显示为每三位分隔的数字，可以使用c函数将数字型转成字符串输出
+-->
+${point?c}
+
+<!--将json字符串转成对象-->
+text?eval
 ```
 
 
-通过Nacos 转发到各个微服务
-
-localhost:51601/user/api/v1/article/load
-
-localhost:51601/article/api/v1/article/load 对应 id
-
-
-
-查询是带入的常量type ,tag
-- heima-leadnews-common/src/main/java/com/feed02/common/constants/ArticleConstants.java
-
-pojos
-- heima-leadnews-model/src/main/java/com/feed02/model/article/pojos/ApArticle.java
-- heima-leadnews-model/src/main/java/com/feed02/model/article/pojos/ApArticleConfig.java
-- heima-leadnews-model/src/main/java/com/feed02/model/article/pojos/ApArticleContent.java
-
-dtos
-- heima-leadnews-model/src/main/java/com/feed02/model/article/dtos/ArticleHomeDto.java
-
-
-
-编写mapper文件
-- heima-leadnews-service/heima-leadnews-article/src/main/java/com/feed02/article/mapper/ApArticleMapper.java
-
-文章表与文章配置表多表查询
-- heima-leadnews-service/heima-leadnews-article/src/main/resources/mapper/ApArticleMapper.xml
-
-配置
-- heima-leadnews-service/heima-leadnews-article/src/main/resources/bootstrap.yml
-
-log存放路径
-- heima-leadnews-service/heima-leadnews-user/src/main/resources/logback.xml
-- heima-leadnews-service/heima-leadnews-article/src/main/resources/logback.xml
-
-编写业务层代码
-- heima-leadnews-service/heima-leadnews-article/src/main/java/com/feed02/article/service/IApArticleService.java
-- heima-leadnews-service/heima-leadnews-article/src/main/java/com/feed02/article/service/impl/ApArticleServiceImpl.java
-
-编写控制器代码
-- heima-leadnews-service/heima-leadnews-article/src/main/java/com/feed02/article/controller/vl/ArticleHomeController.java
-
-## swagger测试或前后端联调测试
-
-1. ok 网关(直接放行可以) localhost:51601/article/api/v1/article/load
-2. ok 直接请求 localhost:51802//api/v1/article/load
-
-## TODO:
-没放行文章请求都是502，猜测是前端没带token
-
-网关过滤器/article 先放行
-- heima-leadnews-gateway/heima-leadnews-app-gateway/src/main/java/com/feed02/app/gateway/filter/AuthorizeFilter.java
-
-
+```velocity
+<#assign text="{'bank':'工商银行','account':'10101920201920212'}" />
+<#assign data=text?eval />
+开户行：${data.bank}  账号：${data.account}
+```
