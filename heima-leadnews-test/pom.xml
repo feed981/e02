@@ -11,5 +11,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>freemaker-demo</module>
+        <module>minio-demo</module>
     </modules>
 </project>
