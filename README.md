@@ -1,28 +1,14 @@
-1. 9001 控制台的端口
+@ConfigurationProperties(prefix = "file.minio")
 
-设置桶的读写权限 
+Spring Boot 从配置文件中加载以 file.minio 为前缀的属性并绑定到 MinIOConfigProperties 类的字段上
 
-找到你的桶选右上设定 configure Bucket
-
-新创建的桶预设是private 改成public
+```yml
+file:
+  minio:
+    accessKey: minioadmin
+    secretKey: minioadmin
+    bucket: leadnews
+    endpoint: http://192.168.33.11:9000
+    readPath: http://192.168.33.11:9000
 ```
-Summary
-Access Policy:
-public
-```
-2. 9000 API的端口
-
-java 上传后才能访问 
-
-```
-http://<IP>:9000/<桶名称>/<档案>
-http://192.168.33.11:9000/leadnews/list.html
-```
-# MinIO 的访问策略
-
-Private：完全私有，只有管理员或具有适当权限的用户可以访问桶和对象。默认情况下，所有新创建的桶都是私有的。
-
-Public：公共访问，允许所有人对桶内的对象进行读取（或读写，取决于具体设置）。这意味着任何人都可以通过 URL 访问桶内的对象。
-
-Custom：自定义策略，可以通过 JSON 文件定义更加细致的权限控制。自定义策略允许你指定更复杂的访问规则，例如只允许特定操作（如只读或只写），或者仅允许特定用户或 IP 地址访问。
 
