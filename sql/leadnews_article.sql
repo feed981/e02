@@ -44,6 +44,7 @@ CREATE TABLE `ap_article` (
   `publish_time` datetime DEFAULT NULL COMMENT '发布时间',
   `sync_status` tinyint(1) DEFAULT '0' COMMENT '同步状态',
   `origin` tinyint(1) unsigned DEFAULT '0' COMMENT '来源',
+
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=1303156149041758211 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='文章信息表，存储已发布的文章';
 
@@ -63,6 +64,9 @@ INSERT INTO `ap_article` VALUES ('1302977754114826241', '黄龄工作室发视�
 INSERT INTO `ap_article` VALUES ('1302977754114826242', '黄龄工作室发视频回应', '4', 'admin', '4', 'Python', '1', null, 'group1/M00/00/00/wKjIgl892vuAXr_MAASCMYD0yzc919.jpg', '', null, null, null, null, null, null, null, '2020-09-07 22:31:19', '2020-09-07 22:31:19', '0', '0');
 INSERT INTO `ap_article` VALUES ('1302977754114826243', '黄龄工作室发视频回应', '4', 'admin', '4', 'Python', '1', null, 'group1/M00/00/00/wKjIgl892vuAXr_MAASCMYD0yzc919.jpg', '', null, null, null, null, null, null, null, '2020-09-07 22:31:19', '2020-09-07 22:31:19', '0', '0');
 INSERT INTO `ap_article` VALUES ('1303156149041758210', '全国抗击新冠肺炎疫情表彰大会', '4', 'admin', '1', 'java', '1', null, 'group1/M00/00/00/wKjIgl9W6iOAD2doAAFY4E1K7-g384.png', null, null, null, null, null, null, null, null, '2020-09-08 10:20:12', '2020-09-08 10:20:12', '0', '0');
+
+ALTER TABLE ap_article ADD COLUMN static_url VARCHAR(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'minIO路径';
+
 
 -- ----------------------------
 -- Table structure for ap_article_config

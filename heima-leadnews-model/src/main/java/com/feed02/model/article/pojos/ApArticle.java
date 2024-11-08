@@ -138,6 +138,6 @@ public class ApArticle implements Serializable {
     /**
      * 静态页面地址
      */
-    @TableField("static_url")
+//    @TableField("static_url")
     private String staticUrl;
 }
