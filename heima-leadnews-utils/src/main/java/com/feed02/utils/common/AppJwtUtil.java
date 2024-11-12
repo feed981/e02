@@ -1,4 +1,4 @@
-package com.heima.utils.common;
+package com.feed02.utils.common;
 
 import io.jsonwebtoken.*;
 

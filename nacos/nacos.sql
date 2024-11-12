@@ -58,3 +58,38 @@ mybatis-plus:
   mapper-locations: classpath*:mapper/*.xml
   # 设置别名包扫描路径，通过该属性可以给包中的类注册别名
   type-aliases-package: com.feed02.model.user.pojos', 'ce4f77aeab14c302f9319753b9aed693', '2024-11-01 19:48:55', '2024-11-01 19:48:55', NULL, '10.0.2.2', '', '', NULL, NULL, NULL, 'yaml', NULL, '');
+
+INSERT INTO nacos_config.config_info (id, data_id, group_id, content, md5, gmt_create, gmt_modified, src_user, src_ip, app_name, tenant_id, c_desc, c_use, effect, `type`, c_schema, encrypted_data_key) VALUES(9, 'leadnews-wemedia', 'DEFAULT_GROUP', 'spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.33.11:3308/leadnews_wemdeia?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&useSSL=false
+    username: hmtt_user
+    password: hmtt_password
+# 设置Mapper接口所对应的XML文件位置，如果你在Mapper接口中有自定义方法，需要进行该配置
+mybatis-plus:
+  mapper-locations: classpath*:mapper/*.xml
+  # 设置别名包扫描路径，通过该属性可以给包中的类注册别名
+  type-aliases-package: com.feed02.model.media.pojos', '9041aa8bed1744f613b2ec7a87bd6d30', '2024-11-10 16:33:23', '2024-11-10 16:33:55', NULL, '10.0.2.2', '', '', '', '', '', 'yaml', '', '');
+INSERT INTO nacos_config.config_info (id, data_id, group_id, content, md5, gmt_create, gmt_modified, src_user, src_ip, app_name, tenant_id, c_desc, c_use, effect, `type`, c_schema, encrypted_data_key) VALUES(10, 'leadnews-wemedia-gateway', 'DEFAULT_GROUP', 'spring:
+  cloud:
+    gateway:
+      globalcors:
+        add-to-simple-url-handler-mapping: true
+        corsConfigurations:
+          ''[/**]'':
+            allowedHeaders: "*" 
+            allowedOrigins: "*" # 跨域處理 允許所有的域
+            allowedMethods:
+              - GET
+              - POST
+              - DELETE
+              - PUT
+              - OPTION
+      routes:
+        # 平台管理
+        - id: wemedia
+          uri: lb://leadnews-wemedia
+          predicates:
+            - Path=/wemedia/**
+          filters:
+            - StripPrefix= 1', '28730304066f9028b897fe4f7f40f908', '2024-11-12 15:07:31', '2024-11-12 15:08:19', NULL, '10.0.2.2', '', '', '', '', '', 'yaml', '', '');

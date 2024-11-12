@@ -1,6 +1,5 @@
 package com.feed02.user.service.impl;
 
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.feed02.model.common.dtos.ResponseResult;
 import com.feed02.model.common.enums.AppHttpCodeEnum;
@@ -8,7 +7,7 @@ import com.feed02.model.user.dtos.LoginDto;
 import com.feed02.model.user.pojos.ApUser;
 import com.feed02.user.mapper.ApUserMapper;
 import com.feed02.user.service.IApUserService;
-import com.heima.utils.common.AppJwtUtil;
+import com.feed02.utils.common.AppJwtUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;

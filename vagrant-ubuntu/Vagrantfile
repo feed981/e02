@@ -37,13 +37,15 @@ Vagrant.configure("2") do |config|
   config.vm.network "private_network", ip: "192.168.33.11"
 
   # 端口映射
-  config.vm.network "forwarded_port", guest: 80, host: 8801   # nginx
+  config.vm.network "forwarded_port", guest: 8801, host: 8801   # nginx -app
+  config.vm.network "forwarded_port", guest: 8802, host: 8802   # nginx -wemedia
+
   config.vm.network "forwarded_port", guest: 8848, host: 8848 # nacos
 
   config.vm.network "forwarded_port", guest: 5901, host: 5901 # gui
   config.vm.network "forwarded_port", guest: 3000, host: 3000 # redmine
-  config.vm.network "forwarded_port", guest: 9000, host: 9000 # minio
-  config.vm.network "forwarded_port", guest: 9001, host: 9001 # minio 控制台
+  config.vm.network "forwarded_port", guest: 9000, host: 9000
+  config.vm.network "forwarded_port", guest: 9001, host: 9001
 
   config.vm.provider "virtualbox" do |vb|
     # Display the VirtualBox GUI when booting the machine

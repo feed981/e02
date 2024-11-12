@@ -3,6 +3,7 @@ package feed02;
 import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.feed02.ArticleApplication;
+import com.feed02.article.mapper.ApArticleContentMapper;
 import com.feed02.article.service.IApArticleContentService;
 import com.feed02.article.service.IApArticleService;
 import com.feed02.file.service.FileStorageService;
@@ -27,6 +28,8 @@ import java.util.Map;
 @RunWith(SpringRunner.class)
 public class CreateStaticUrlTest {
 
+    @Autowired
+    private ApArticleContentMapper apArticleContentMapper;
     @Autowired
     private IApArticleContentService apArticleContentService;
 

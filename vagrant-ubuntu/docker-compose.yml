@@ -46,7 +46,8 @@ services:
     container_name: nginx
     restart: always
     ports:
-      - "80:80"
+      - "8801:8801"
+      - "8802:8802"
     environment:
       - TZ=Asia/Shanghai
     volumes:
