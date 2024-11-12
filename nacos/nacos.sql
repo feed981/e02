@@ -69,7 +69,7 @@ INSERT INTO nacos_config.config_info (id, data_id, group_id, content, md5, gmt_c
 mybatis-plus:
   mapper-locations: classpath*:mapper/*.xml
   # 设置别名包扫描路径，通过该属性可以给包中的类注册别名
-  type-aliases-package: com.feed02.model.media.pojos', '9041aa8bed1744f613b2ec7a87bd6d30', '2024-11-10 16:33:23', '2024-11-10 16:33:55', NULL, '10.0.2.2', '', '', '', '', '', 'yaml', '', '');
+  type-aliases-package: com.feed02.model.wemedia.pojos', '9041aa8bed1744f613b2ec7a87bd6d30', '2024-11-10 16:33:23', '2024-11-10 16:33:55', NULL, '10.0.2.2', '', '', '', '', '', 'yaml', '', '');
 INSERT INTO nacos_config.config_info (id, data_id, group_id, content, md5, gmt_create, gmt_modified, src_user, src_ip, app_name, tenant_id, c_desc, c_use, effect, `type`, c_schema, encrypted_data_key) VALUES(10, 'leadnews-wemedia-gateway', 'DEFAULT_GROUP', 'spring:
   cloud:
     gateway:

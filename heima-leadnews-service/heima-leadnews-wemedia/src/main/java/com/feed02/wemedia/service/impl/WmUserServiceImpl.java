@@ -27,7 +27,8 @@ public class WmUserServiceImpl extends ServiceImpl<WmUserMapper, WmUser> impleme
         }
 
         //2.查询用户
-        WmUser wmUser = getOne(Wrappers.<WmUser>lambdaQuery().eq(WmUser::getName, dto.getName()));
+        WmUser wmUser = query().eq("name", dto.getName()).one();
+//        WmUser wmUser = getOne(Wrappers.<WmUser>lambdaQuery().eq(WmUser::getName, dto.getName()));
         if(wmUser == null){
             return ResponseResult.errorResult(AppHttpCodeEnum.DATA_NOT_EXIST);
         }
