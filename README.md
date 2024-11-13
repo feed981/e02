@@ -1,7 +1,16 @@
-1. 检查参数
-2. 分页查询 是否收藏、按用户查询、时间倒叙
-3. 返回结果
+# 频道列表	
 
-java.lang.reflect.InaccessibleObjectException，而它提示 "module java.base does not "opens java.lang.invoke" to unnamed module", 这通常是由 Java 反射访问权限限制引起的。在 Java 9 及以上版本中，反射访问某些非公开成员需要特殊的模块配置，否则会出现 InaccessibleObjectException。MyBatis-Plus 在使用 LambdaQueryWrapper 时需要访问 SerializedLambda，而这正是引发问题的原因。
+- heima-leadnews-model/src/main/java/com/feed02/model/wemedia/pojos/WmChannel.java
+- heima-leadnews-service/heima-leadnews-wemedia/src/main/java/com/feed02/wemedia/controller/v1/WmChannelController.java
+- heima-leadnews-service/heima-leadnews-wemedia/src/main/java/com/feed02/wemedia/mapper/WmChannelMapper.java
+- heima-leadnews-service/heima-leadnews-wemedia/src/main/java/com/feed02/wemedia/service/WmChannelService.java
+- heima-leadnews-service/heima-leadnews-wemedia/src/main/java/com/feed02/wemedia/service/impl/WmChannelServiceImpl.java
 
-这边是 使用 QueryWrapper 代替 LambdaQueryWrapper
+# 文章列表查询	
+
+- heima-leadnews-model/src/main/java/com/feed02/model/wemedia/dtos/WmNewsPageReqDto.java
+- heima-leadnews-model/src/main/java/com/feed02/model/wemedia/pojos/WmNews.java
+- heima-leadnews-service/heima-leadnews-wemedia/src/main/java/com/feed02/wemedia/controller/v1/WmNewsController.java
+- heima-leadnews-service/heima-leadnews-wemedia/src/main/java/com/feed02/wemedia/mapper/WmNewsMapper.java
+- heima-leadnews-service/heima-leadnews-wemedia/src/main/java/com/feed02/wemedia/service/WmNewsService.java
+- heima-leadnews-service/heima-leadnews-wemedia/src/main/java/com/feed02/wemedia/service/impl/WmNewsServiceImpl.java
