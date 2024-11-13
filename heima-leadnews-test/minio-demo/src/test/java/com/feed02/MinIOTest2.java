@@ -22,7 +22,7 @@ public class MinIOTest2 {
     @Test
     public void test() throws FileNotFoundException {
         FileInputStream fileInputStream = new FileInputStream("D:\\freemaker\\list.html");
-        String path = fileStorageService.uploadHtmlFile("", "list.html", fileInputStream);
+        String path = fileStorageService.uploadHtmlFile("", "list.html", fileInputStream ,"text/html");
         System.out.println(path);
     }
 

@@ -106,12 +106,12 @@ public class MinIOFileStorageService implements FileStorageService {
      * @return  文件全路径
      */
     @Override
-    public String uploadHtmlFile(String prefix, String filename,InputStream inputStream) {
+    public String uploadHtmlFile(String prefix, String filename,InputStream inputStream ,String contentType) {
         String filePath = builderFilePath(prefix, filename);
         try {
             PutObjectArgs putObjectArgs = PutObjectArgs.builder()
                     .object(filePath)
-                    .contentType("text/html")
+                    .contentType(contentType)
                     .bucket(minIOConfigProperties.getBucket()).stream(inputStream,inputStream.available(),-1)
                     .build();
             minioClient.putObject(putObjectArgs);

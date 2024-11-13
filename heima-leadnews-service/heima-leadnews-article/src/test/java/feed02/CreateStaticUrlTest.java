@@ -61,7 +61,7 @@ public class CreateStaticUrlTest {
 
             //3.把html文件上传到minio中
             InputStream io = new ByteArrayInputStream(out.toString().getBytes());
-            String path = fileStorageService.uploadHtmlFile("", apArticleContent.getArticleId() + ".html", io);
+            String path = fileStorageService.uploadHtmlFile("", apArticleContent.getArticleId() + ".html", io ,"text/html");
 
             //4.修改ap_article表，保存static_url字段
             apArticleService.update().eq("id" ,apArticleContent.getArticleId()).set("static_url",path).update();

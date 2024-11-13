@@ -60,5 +60,5 @@ public interface FileStorageService {
      */
     String getFileContent(String pathUrl) throws IOException;
 
-    String uploadHtmlFile(String prefix, String filename,InputStream inputStream);
+    String uploadHtmlFile(String prefix, String filename,InputStream inputStream ,String contentType);
 }
