@@ -86,7 +86,7 @@ public class WmNewsServiceImpl extends ServiceImpl<WmNewsMapper , WmNews> implem
     // 新增、修改文章、保存草稿
     @Override
     public ResponseResult submitNews(WmNewsDto dto) {
-        //0.条件判断
+        // 0. 条件判断
         if(dto == null && dto.getContent() == null){
             return ResponseResult.errorResult(AppHttpCodeEnum.PARAM_INVALID);
         }
