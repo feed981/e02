@@ -1,16 +1,71 @@
-# 频道列表	
+# 表结构分析
 
-- heima-leadnews-model/src/main/java/com/feed02/model/wemedia/pojos/WmChannel.java
-- heima-leadnews-service/heima-leadnews-wemedia/src/main/java/com/feed02/wemedia/controller/v1/WmChannelController.java
-- heima-leadnews-service/heima-leadnews-wemedia/src/main/java/com/feed02/wemedia/mapper/WmChannelMapper.java
-- heima-leadnews-service/heima-leadnews-wemedia/src/main/java/com/feed02/wemedia/service/WmChannelService.java
-- heima-leadnews-service/heima-leadnews-wemedia/src/main/java/com/feed02/wemedia/service/impl/WmChannelServiceImpl.java
+|||
+|--|--|
+|wm_news |文章表|
+|wm_material |素材表|
+|wm_news_material |文章素材关系表|
 
-# 文章列表查询	
 
-- heima-leadnews-model/src/main/java/com/feed02/model/wemedia/dtos/WmNewsPageReqDto.java
-- heima-leadnews-model/src/main/java/com/feed02/model/wemedia/pojos/WmNews.java
-- heima-leadnews-service/heima-leadnews-wemedia/src/main/java/com/feed02/wemedia/controller/v1/WmNewsController.java
-- heima-leadnews-service/heima-leadnews-wemedia/src/main/java/com/feed02/wemedia/mapper/WmNewsMapper.java
-- heima-leadnews-service/heima-leadnews-wemedia/src/main/java/com/feed02/wemedia/service/WmNewsService.java
-- heima-leadnews-service/heima-leadnews-wemedia/src/main/java/com/feed02/wemedia/service/impl/WmNewsServiceImpl.java
+其中wm_material和wm_news表的实体类已经导入到了项目中，下面是wm_news_material表对应的实体类
+
+# 实现思路
+
+
+1.前端提交发布或保存为草稿
+
+2.后台判断请求中是否包含了文章id
+
+3.如果不包含id,则为新增
+
+​	3.1 执行新增文章的操作
+
+​	3.2 关联文章内容图片与素材的关系
+
+​	3.3 关联文章封面图片与素材的关系
+
+4.如果包含了id，则为修改请求
+
+​	4.1 删除该文章与素材的所有关系
+
+​	4.2 执行修改操作
+
+​	4.3 关联文章内容图片与素材的关系
+
+​	4.4 关联文章封面图片与素材的关系
+
+# 接口定义
+|||
+|--|--|
+| 接口路径 | /api/v1/channel/submit |
+| 请求方式 | POST                   |
+| 参数     | WmNewsDto              |
+| 响应结果 | ResponseResult         |
+
+# 前端给传递过来的json数据格式为:
+
+
+```json
+{
+    "title":"黑马头条项目背景",
+    "type":"1",//这个 0 是无图  1 是单图  3 是多图  -1 是自动
+    "labels":"黑马头条",
+    "publishTime":"2020-03-14T11:35:49.000Z",
+    "channelId":1,
+    "images":[
+        "http://192.168.200.130/group1/M00/00/00/wKjIgl5swbGATaSAAAEPfZfx6Iw790.png"
+    ],
+    "status":1,
+    "content":"[
+    {
+        "type":"text",
+        "value":"随着智能手机的普及，人们更加习惯于通过手机来看新闻。由于生活节奏的加快，很多人只能利用碎片时间来获取信息，因此，对于移动资讯客户端的需求也越来越高。黑马头条项目正是在这样背景下开发出来。黑马头条项目采用当下火热的微服务+大数据技术架构实现。本项目主要着手于获取最新最热新闻资讯，通过大数据分析用户喜好精确推送咨询新闻"
+    },
+    {
+        "type":"image",
+        "value":"http://192.168.200.130/group1/M00/00/00/wKjIgl5swbGATaSAAAEPfZfx6Iw790.png"
+    }
+]"
+}
+  ```
+
